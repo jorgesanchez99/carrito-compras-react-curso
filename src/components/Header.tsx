@@ -1,17 +1,21 @@
 import { IGuitar } from "../interface/Guitar";
-
+import { useMemo } from "react";
 
 interface Props {
-    cart: IGuitar[]
+    cart: IGuitar[],
+    removefromCart: (id: number) => void,
+    increaseQuantity: (id: number) => void,
+    decreaseQuantity: (id: number) => void,
+    clearCart: () => void
 }
 
-export default function Header({ cart }: Props) {
+export default function Header({ cart,removefromCart,increaseQuantity,decreaseQuantity,clearCart }: Props) {
 
     //* State Derivado
     //* Se usa una funcion porque se necesita que se ejecute cada vez que se renderiza el componente
     //* Si se usa un valor, solo se ejecuta una vez
-    const isEmpty = () => cart.length === 0;
-    const carTotal = () => cart.reduce((acc, guitar) => acc + (guitar.quantity! * guitar.price), 0);
+    const isEmpty = useMemo( () => cart.length === 0,[cart]);
+    const carTotal = useMemo(() => cart.reduce((acc, guitar) => acc + (guitar.quantity! * guitar.price), 0),[cart]);
 
     return (
 
@@ -30,7 +34,7 @@ export default function Header({ cart }: Props) {
                             <img className="img-fluid" src="/img/carrito.png" alt="imagen carrito" />
 
                             <div id="carrito" className="bg-white p-3">
-                                {isEmpty() ? (
+                                {isEmpty ? (
                                     <p className="text-center">El carrito esta vacio</p>
                                 ) : (
                                     <table className="w-100 table">
@@ -57,6 +61,7 @@ export default function Header({ cart }: Props) {
                                                         <button
                                                             type="button"
                                                             className="btn btn-dark"
+                                                            onClick={()=>decreaseQuantity(guitar.id)}
                                                         >
                                                             -
                                                         </button>
@@ -64,6 +69,7 @@ export default function Header({ cart }: Props) {
                                                         <button
                                                             type="button"
                                                             className="btn btn-dark"
+                                                            onClick={()=>increaseQuantity(guitar.id)}
                                                         >
                                                             +
                                                         </button>
@@ -72,6 +78,7 @@ export default function Header({ cart }: Props) {
                                                         <button
                                                             className="btn btn-danger"
                                                             type="button"
+                                                            onClick={()=>removefromCart(guitar.id)}
                                                         >
                                                             X
                                                         </button>
@@ -83,8 +90,10 @@ export default function Header({ cart }: Props) {
                                 )}
 
 
-                                <p className="text-end">Total pagar: <span className="fw-bold">${carTotal()}</span></p>
-                                <button className="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
+                                <p className="text-end">Total pagar: <span className="fw-bold">${carTotal}</span></p>
+                                <button className="btn btn-dark w-100 mt-3 p-2"
+                                    onClick={clearCart}
+                                >Vaciar Carrito</button>
                             </div>
                         </div>
                     </nav>
