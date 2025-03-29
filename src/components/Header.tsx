@@ -1,21 +1,18 @@
-import { IGuitar } from "../interface/Guitar";
-import { useMemo } from "react";
+import { CartItem, GuitarId } from "../interface/Guitar";
 
 interface Props {
-    cart: IGuitar[],
-    removefromCart: (id: number) => void,
-    increaseQuantity: (id: number) => void,
-    decreaseQuantity: (id: number) => void,
-    clearCart: () => void
+    cart: CartItem[],
+    removefromCart: (id:GuitarId) => void,
+    increaseQuantity: (id:GuitarId) => void,
+    decreaseQuantity: (id:GuitarId) => void,
+    clearCart: () => void,
+    isEmpty: boolean,
+    carTotal: number
 }
 
-export default function Header({ cart,removefromCart,increaseQuantity,decreaseQuantity,clearCart }: Props) {
+export default function Header({ cart,removefromCart,increaseQuantity,decreaseQuantity,clearCart,isEmpty,carTotal }: Props) {
 
-    //* State Derivado
-    //* Se usa una funcion porque se necesita que se ejecute cada vez que se renderiza el componente
-    //* Si se usa un valor, solo se ejecuta una vez
-    const isEmpty = useMemo( () => cart.length === 0,[cart]);
-    const carTotal = useMemo(() => cart.reduce((acc, guitar) => acc + (guitar.quantity! * guitar.price), 0),[cart]);
+
 
     return (
 

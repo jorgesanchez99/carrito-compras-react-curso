@@ -1,16 +1,10 @@
+import { IGuitar } from "../interface/Guitar";
 
 
-interface Guitar {
-    id: number,
-    name: string,
-    image: string,
-    description: string,
-    price: number
-}
 
 interface GuitarProps {
-    guitar: Guitar,
-    addToCart: (guitar: Guitar) => void;
+    guitar: IGuitar,
+    addToCart: (guitar: IGuitar) => void
     // cart: Guitar[];
 }
 
